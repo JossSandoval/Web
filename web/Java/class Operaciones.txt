@@ -1,0 +1,96 @@
+package pjmx.com.controller;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import pjmx.com.modelo.User;
+
+public class Operaciones {
+	
+	// Crear un nuevo usuario
+		public void createUser(User user) {
+			
+			String query = "INSERT INTO formulario (Name, Lastname, Email, Address, Password) VALUES (?, ?, ?, ?, ?)";
+		
+			Connection conn=Conexion.getConnection();
+			
+			try (
+					
+					PreparedStatement stmt = conn.prepareStatement(query)) {
+				stmt.setString(1, user.getName());
+				stmt.setString(2, user.getLastname());
+				stmt.setString(3, user.getEmail());
+				stmt.setString(4, user.getAddress());
+				stmt.setString(5, user.getPassword());
+
+				stmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// Obtener todos los usuarios
+		public List<User> obtenerUsers() {
+			List<User> users = new ArrayList<>();
+
+			Connection conn=Conexion.getConnection();
+			try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery("SELECT * FROM formulario")) {
+
+				while (rs.next()) {
+					int id = rs.getInt("Id");
+					String name = rs.getString("Name");
+					String lastname = rs.getString("Lastname");
+					String email = rs.getString("Email");
+					String address = rs.getString("Address");
+					String password = rs.getString("Password");
+
+					User user = new User(id, name, lastname, email, address, password);
+					users.add(user);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			return users;
+		}
+
+		// Actualizar un usuario existente
+		public void actualizarUser(User user) {
+			String query = "UPDATE formulario SET Name=?, Lastname=?, Email=?, Address=?, Password=? WHERE Id=?";
+
+			Connection conn=Conexion.getConnection();
+			try (PreparedStatement stmt = conn.prepareStatement(query)) {
+				stmt.setString(1, user.getName());
+				stmt.setString(2, user.getLastname());
+				stmt.setString(3, user.getEmail());
+				stmt.setString(4, user.getAddress());
+				stmt.setString(5, user.getPassword());
+				stmt.setInt(6, user.getId());
+
+				stmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// Eliminar un usuario existente
+		public void eliminarUser(int id) {
+			String query = "DELETE FROM formulario WHERE Id=?";
+
+			Connection conn=Conexion.getConnection();
+			try (PreparedStatement stmt = conn.prepareStatement(query)) {
+				stmt.setInt(1, id);
+
+				stmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+}
+

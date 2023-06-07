@@ -1,0 +1,45 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"   pageEncoding="UTF-8"%>
+
+<%@ page import="java.util.List" %>
+<%@ page import="java.sql.*" %>
+<%@ page import= "pjmx.com.modelo.User" %>
+<%@ page import="pjmx.com.controller.Operaciones" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+ <% 
+ Operaciones op= new Operaciones();
+ 
+    List<User> users = null;
+    
+    try {
+        users = op.obtenerUsers();
+    } catch (Exception e) {
+        out.println("Error al obtener los usuarios: " + e.getMessage());
+    }
+        
+    if (users != null)  {
+    	for (User user : users) {
+    %>
+   
+    
+     
+        <p>Name: <%= user.getName() %></p>
+        <p>Lastname: <%= user.getLastname() %></p>
+        <p>Email: <%= user.getEmail() %></p>
+        <p>Address: <%= user.getAddress() %></p>
+        <p>Password: <%= user.getPassword() %></p>
+        
+    
+     
+    <% 
+        }
+    } else {
+        out.println("No se encontraron usuarios.");
+    }
+    %></body>
+</html>

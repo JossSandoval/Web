@@ -1,0 +1,43 @@
+package pjmx.com.test;
+
+
+
+import java.util.List;
+
+
+import pjmx.com.controller.Operaciones;
+import pjmx.com.modelo.User;
+public class TestController {
+	
+	public static  void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		
+		
+		
+		//  Connection conn= Conexion.getConnection();
+	        List<User> users = null;
+
+	        
+	        Operaciones op= new Operaciones();
+	        
+	        try {
+	            users = op.obtenerUsers();
+	        } catch (Exception e) {
+	           System.out.println("Error al obtener los usuarios: " + e.getMessage());
+	        }
+	        
+	        if (users != null) {
+	            for (User user : users) {
+	            	System.out.println(user.getName());
+                 	  System.out.println( user.getLastname() );
+	            			  System.out.println( user.getEmail());
+	            					  System.out.println( user.getAddress());
+	            					  System.out.println( user.getPassword());
+	                       }
+	                   }
+	            }
+		
+		
+
+}

@@ -1,0 +1,37 @@
+package pjmx.com.controller;
+
+import java.sql.*;
+
+public class Conexion {
+
+	// Propiedades
+	private static Connection conn = null;
+	// Constructor
+	private Conexion() {
+
+		String url = "jdbc:mysql://192.168.100.166:3306/ApplicationWeb";
+		String driver = "com.mysql.jdbc.Driver";
+		String usuario = "armando";
+		String password = "Armado98#";
+
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, usuario, password);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	} // Fin constructor
+
+	// Métodos
+	public static Connection getConnection() {
+
+		if (conn == null) {
+			new Conexion();
+		}
+
+		return conn;
+	} // Fin getConnection
+
+	
+
+}
